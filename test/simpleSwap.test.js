@@ -1,6 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { loadFixture, time } = require("@nomicfoundation/hardhat-network-helpers");
+const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 
 describe("SimpleSwap", function () {
     async function deployFixture() {
@@ -19,6 +20,48 @@ describe("SimpleSwap", function () {
         return { owner, user1, user2, tokenA, tokenB, swap };
 
     }
+
+    //ADD LIQUIDITY TESTS
+
+    it("debería permitir agregar liquidez inicial correctamente", async function () {
+
+        const { owner, tokenA, tokenB, swap } = await loadFixture(deployFixture);
+
+        const tokenAAddress = await tokenA.getAddress();
+        const tokenBAddress = await tokenB.getAddress();
+        const swapAddress = await swap.getAddress();
+        const ownerAddress = await owner.getAddress();
+
+        await tokenA.mint(ownerAddress, 10000);
+        await tokenB.mint(ownerAddress, 10000);
+        await tokenA.connect(owner).approve(swapAddress, 10000);
+        await tokenB.connect(owner).approve(swapAddress, 10000);
+
+        const deadline = Math.floor(Date.now() / 1000) + 60;
+
+        await expect(swap.connect(owner).addLiquidity(
+            tokenAAddress,
+            tokenBAddress,
+            10000,
+            10000,
+            0,
+            0,
+            ownerAddress,
+            deadline
+        )
+        ).to.emit(swap, "LiquidityAdded").withArgs(ownerAddress, 10000, 10000, anyValue);
+
+        const reserveA = await swap.reserveA();
+        const reserveB = await swap.reserveB();
+        expect(reserveA).to.equal(10000);
+        expect(reserveB).to.equal(10000);
+
+        const contractTokenABalance = await tokenA.balanceOf(swapAddress);
+        const contractTokenBBalance = await tokenB.balanceOf(swapAddress);
+        expect(contractTokenABalance).to.equal(10000);
+        expect(contractTokenBBalance).to.equal(10000);
+
+    });
 
     it("debería fallar si el deadline expiró", async function () {
         const { owner, tokenA, tokenB, swap } = await loadFixture(deployFixture);

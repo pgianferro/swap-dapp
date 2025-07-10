@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">3.17% </span>
+        <span class="strong">20.63% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>2/63</span>
+        <span class='fraction'>13/63</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">1.79% </span>
+        <span class="strong">10.71% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>1/56</span>
+        <span class='fraction'>6/56</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">22.22% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/9</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">8% </span>
+        <span class="strong">26% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>8/100</span>
+        <span class='fraction'>26/100</span>
       </div>
     </div>
   </div>
@@ -585,22 +585,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -624,27 +624,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -973,17 +973,17 @@ contract SimpleSwap {
     {
         TokenPair memory tokens = TokenPair(tokenA, tokenB);
 &nbsp;
-        <span class="missing-if-branch" title="if path not taken" >I</span>require(deadline &gt; block.timestamp, "Transact expired");
-<span class="cstat-no" title="statement not covered" >        require(</span>
+        require(deadline &gt; block.timestamp, "Transact expired");
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
             tokenA_ == tokens.tokenA &amp;&amp; tokenB_ == tokens.tokenB,
             "bad pair"
         );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        uint256 _reserveA = reserveA;</span>
-<span class="cstat-no" title="statement not covered" >        uint256 _reserveB = reserveB;</span>
-<span class="cstat-no" title="statement not covered" >        uint256 _supply = _totalSupply;</span>
+        uint256 _reserveA = reserveA;
+        uint256 _reserveB = reserveB;
+        uint256 _supply = _totalSupply;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (_reserveA == 0 &amp;&amp; _reserveB == 0) {</span>
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (_reserveA == 0 &amp;&amp; _reserveB == 0) {
             // First add: use amountDesired for A and B
             amountA = amountADesired;
             amountB = amountBDesired;
@@ -1010,10 +1010,10 @@ contract SimpleSwap {
             }
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        IERC20(tokens.tokenA).transferFrom(msg.sender, address(this), amountA)</span>;
-<span class="cstat-no" title="statement not covered" >        IERC20(tokens.tokenB).transferFrom(msg.sender, address(this), amountB)</span>;
+        IERC20(tokens.tokenA).transferFrom(msg.sender, address(this), amountA);
+        IERC20(tokens.tokenB).transferFrom(msg.sender, address(this), amountB);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (_supply == 0) {</span>
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (_supply == 0) {
             liquidity = Math.sqrt(amountA * amountB);
         } else {
             liquidity = Math.min(
@@ -1022,15 +1022,15 @@ contract SimpleSwap {
             );
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        require(liquidity &gt; 0, "zero liq")</span>;
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(liquidity &gt; 0, "zero liq");
 &nbsp;
         reserveA += amountA;
         reserveB += amountB;
         _totalSupply += liquidity;
         _balanceOf[to] += liquidity;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        emit LiquidityAdded(msg.sender, amountA, amountB, liquidity);</span>
-<span class="cstat-no" title="statement not covered" >        return (amountA, amountB, liquidity);</span>
+        emit LiquidityAdded(msg.sender, amountA, amountB, liquidity);
+        return (amountA, amountB, liquidity);
     }
 &nbsp;
     /// @notice Removes liquidity from the pool and burns LP tokens
@@ -1207,7 +1207,7 @@ contract SimpleSwap {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 10 2025 14:21:43 GMT-0300 (hora estándar de Argentina)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 10 2025 15:12:21 GMT-0300 (hora estándar de Argentina)
 </div>
 </div>
 <script src="../prettify.js"></script>
