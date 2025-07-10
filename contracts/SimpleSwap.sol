@@ -235,7 +235,7 @@ contract SimpleSwap {
         address to,
         uint256 deadline
     ) external returns (uint256 amountA, uint256 amountB) {
-        require(deadline > block.timestamp, "expired");
+        require(deadline > block.timestamp, "Transact expired");
 
         uint256 _reserveA = reserveA;
         uint256 _reserveB = reserveB;
@@ -377,7 +377,7 @@ contract SimpleSwap {
         uint256 reserveIn,
         uint256 reserveOut
     ) external pure returns (uint256 amountOut) {
-        require(amountIn > 0, "AmountIn < 0");
+        require(amountIn > 0, "amountIn < 0");
         require(reserveIn > 0 && reserveOut > 0, "Reserves < 0");
 
         amountOut = (amountIn * reserveOut) / (reserveIn + amountIn);
