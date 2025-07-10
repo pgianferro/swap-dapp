@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- <script src="https://cdn.jsdelivr.net/npm/web3@4.11.1/dist/web3.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
+  <!-- <script src="./contracts.js"></script> -->
+  <script src="./script.js"></script>
+</head>
+
+<body>
+
+  <button id="conect" onclick="connect()"><label id="account" style="cursor: pointer;">Conectar</label> </button><br>
+
+  <div id='swap-box'>
+    <div id="swap-menu">
+      <label class="token">M10</label> to <label class="token">CR7</label>
+    </div>
+
+    <div id="swap-title-box">
+      <p id="swap-title">Swap</p>
+      <p id="swap-subtitle">Trade tokens in an instant</p>
+    </div>
+
+    <div id="swap-form-box">
+      <div id='form' onSubmit='handleSubmit()'>
+
+        <!-- Token que entregás: M10 -->
+        <label>
+          <img id="alineadoTextoImagenCentro" src='./M10.png' class="logo" />
+          <label class="token">M10</label>
+          <div class="swap-balance pick-balance">Balance: <label class="balance" id="balanceM10">0</label></div>
+        </label>
+
+        <input onChange='setValueTokenToSpend()' type="text" class="IHAVE" placeholder="0.0"></input>
+
+        <br>
+
+        <!-- Token que recibís: CR7 -->
+        <label>
+          <img id="alineadoTextoImagenCentro" src='./CR7.png' class="logo" />
+          <label class="token">CR7</label>
+          <div class="swap-balance">Balance: <label class="balance" id="balanceCR7">0</label></div>
+        </label>
+
+        <input type="text" class="IWANT" placeholder="0.0" readonly></input>
+
+        <div className="separador-vertical"></div>
+
+        <label id="swap-price-word">Price
+          <div id="swap-price">
+            TOKEN_PRICE <label class="precio">0</label> CR7
+          </div>
+        </label>
+
+        <button id="swap-submit" name="submit" onclick="handleSubmit()">Swap</button>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div id="toast"></div>
+
+  <div id="spinner" class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+
+
+
+</body>
+
+</html>
