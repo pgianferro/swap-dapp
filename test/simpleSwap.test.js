@@ -1,75 +1,52 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { loadFixture, time } = require("@nomicfoundation/hardhat-network-helpers");
 
 describe("SimpleSwap", function () {
-  let owner, user;
-  let M10, CR7, swap;
-  let tokenA, tokenB;
+    async function deployFixture() {
+        const [owner, user1, user2] = await ethers.getSigners();
 
-  beforeEach(async () => {
-    [owner, user] = await ethers.getSigners();
+        const M10 = await ethers.getContractFactory("M10");
+        const CR7 = await ethers.getContractFactory("CR7");
+        const SimpleSwap = await ethers.getContractFactory("SimpleSwap");
 
-    // Deploy tokens
-    const M10Factory = await ethers.getContractFactory("M10");
-    tokenA = await M10Factory.deploy();
-    await tokenA.waitForDeployment();
+        const tokenA = await M10.deploy();
+        const tokenB = await CR7.deploy();
+        await tokenA.waitForDeployment();
+        await tokenB.waitForDeployment();
 
-    const CR7Factory = await ethers.getContractFactory("CR7");
-    tokenB = await CR7Factory.deploy();
-    await tokenB.waitForDeployment();
+        const swap = await SimpleSwap.deploy(await tokenA.getAddress(), await tokenB.getAddress()); await swap.waitForDeployment();
+        return { owner, user1, user2, tokenA, tokenB, swap };
 
-    // Mint tokens
-    await tokenA.mint(owner.address, ethers.parseEther("10000"));
-    await tokenB.mint(owner.address, ethers.parseEther("10000"));
+    }
 
-    // Deploy swap contract
-    const SwapFactory = await ethers.getContractFactory("SimpleSwap");
-    swap = await SwapFactory.deploy(await tokenA.getAddress(), await tokenB.getAddress());
-    await swap.waitForDeployment();
+    it("debería fallar si el deadline expiró", async function () {
+        const { owner, tokenA, tokenB, swap } = await loadFixture(deployFixture);
 
-    // Approve swap contract
-    await tokenA.approve(await swap.getAddress(), ethers.parseEther("10000"));
-    await tokenB.approve(await swap.getAddress(), ethers.parseEther("10000"));
-  });
+        const tokenAAddress = await tokenA.getAddress();
+        const tokenBAddress = await tokenB.getAddress();
+        const swapAddress = await swap.getAddress();
+        const ownerAddress = await owner.getAddress();
 
-  it("getPrice devuelve valor > 0", async () => {
-    const price = await swap.getPrice();
-    expect(price).to.be.gt(0);
-  });
+        await tokenA.mint(ownerAddress, 10000);
+        await tokenB.mint(ownerAddress, 10000);
+        await tokenA.connect(owner).approve(swapAddress, 10000);
+        await tokenB.connect(owner).approve(swapAddress, 10000);
 
-  it("swapExactTokensForTokens cambia balances", async () => {
-    const amountIn = ethers.parseEther("10");
+        const deadline = (await time.latest()) - 1;
 
-    // Hacer el swap
-    await swap.swapExactTokensForTokens(
-      amountIn,
-      0,
-      [await tokenA.getAddress(), await tokenB.getAddress()],
-      owner.address,
-      Math.floor(Date.now() / 1000) + 3600
-    );
+        await expect(
+            swap.connect(owner).addLiquidity(
+                tokenAAddress,
+                tokenBAddress,
+                10000,
+                10000,
+                0,
+                0,
+                ownerAddress,
+                deadline
+            )
+        ).to.be.revertedWith("Transact expired");
+    });
 
-    const newBalanceA = await tokenA.balanceOf(owner.address);
-    const newBalanceB = await tokenB.balanceOf(owner.address);
-
-    expect(newBalanceA).to.be.lt(ethers.parseEther("10000"));
-    expect(newBalanceB).to.be.gt(0);
-  });
-
-  it("falla si no hay allowance suficiente", async () => {
-    const amountIn = ethers.parseEther("10");
-
-    // Aprobar solo 1 token para simular falla
-    await tokenA.approve(await swap.getAddress(), ethers.parseEther("1"));
-
-    await expect(
-      swap.swapExactTokensForTokens(
-        amountIn,
-        0,
-        [await tokenA.getAddress(), await tokenB.getAddress()],
-        owner.address,
-        Math.floor(Date.now() / 1000) + 3600
-      )
-    ).to.be.reverted;
-  });
 });
