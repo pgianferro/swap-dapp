@@ -26,12 +26,7 @@ The project is educational and ideal for understanding AMM logic, testing, and b
 
 ## 🛠️ Installation
 
-Clone the repository and install dependencies:
 
-```bash
-git clone https://github.com/pgianferro/swap-dapp.git
-cd swap-dapp
-npm install
 
 ---
 
