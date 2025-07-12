@@ -26,7 +26,47 @@ The project is educational and ideal for understanding AMM logic, testing, and b
 
 ## 🛠️ Installation
 
+Clone the repository and install dependencies:
 
+```bash
+git clone https://github.com/pgianferro/swap-dapp.git
+cd swap-dapp
+npm install
+```
+
+### Compile Contracts
+
+```bash
+npx hardhat compile
+```
+
+### Deploy Locally
+
+Start local Hardhat node:
+
+```bash
+npx hardhat node
+```
+
+In another terminal, deploy:
+
+```bash
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+### Frontend Setup
+
+Start local frontend:
+
+```bash
+npm run start
+```
+
+To build production:
+
+```bash
+npm run build
+```
 
 ---
 
