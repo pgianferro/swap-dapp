@@ -1,25 +1,26 @@
-body
-{
-	/*background-color: #e7fbff;*/
-	background-color: #171717;
-	background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
-	background-position: center; /* Centra la imagen en el contenedor */
-	background-repeat: no-repeat; /* Evita que la imagen se repita */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+body {
+	background-image: url('Messi_Ronaldo_swap_dapp_cover.jpg');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	font-family: 'Bebas Neue', sans-serif;
 }
 
 #swap-box
 {
 	width: 340px;
-	height: 500px;
+	height: 600px;
 	background-color: white;
 	margin: auto;
-	border-radius: 24px;
-	border: 1px solid #e7e3eb;
+	border-radius: 12px;
+	border: 2px solid #af2606;
 	box-shadow: 4px 2px 2px grey;
 
 	font-weight: bolder;
-	font-size: 20px;
-	color: #280d5f;
+	font-size: 25px;
+	color: #000000;
 
 	margin-top: 60px;
 	clear: both;
@@ -29,9 +30,9 @@ body
 {
 	width: 100%;
 	height: 52px;
-	border-top-right-radius:24px;
-	border-top-left-radius:24px;
-	background-color: #eeeaf4;
+	border-top-right-radius:12px;
+	border-top-left-radius:12px;
+	background-color: #c6d2d9;
 	padding-top: 16px;
 	text-align: center;
 }
@@ -40,28 +41,28 @@ body
 {
 	width: 168px;
 	height: 52px;
-	border-top-right-radius:24px;
-	border-top-left-radius:24px;
-	background-color: #eeeaf4;
+	border-top-right-radius:12px;
+	border-top-left-radius:12px;
+	background-color: #c6d2d9;
  	display: flex;
 	align-items: center;
 	justify-content: center;
 	float: left;
 	text-align: center;
 	cursor: pointer;
-	color: #7a6eaa;
+	color: #af2606;
 }
 
 .swap-button-active
 {
 	background-color: white;
-	color: #280d5f;
+	color: #1144b9;	
 }
 
 #swap-title-box
 {
 	height: 60px;
-	border-bottom: solid 1px #eeeaf4;
+	border-bottom: solid 1px #c6d2d9;
 }
 
 #swap-title
@@ -74,9 +75,9 @@ body
 
 #swap-subtitle
 {
-	font-size: 12px;
+	font-size: 15px;
 	text-align: center;
-	color: #7a6eb2;
+	color: #af2606;
 	font-weight: bold;
 }
 
@@ -84,7 +85,7 @@ body
 {
 	width: calc(100% - 1px);
 	height: 288px;
-	border: 1px solid #eeeaf4;
+	border: 1px solid #c6d2d9;
 }
 
 #form
@@ -109,20 +110,20 @@ form
 .swap-balance
 {
 	float: right;
-	color: #877cad;
-	font-size: 12px;
+	color: #af2606;
+	font-size: 15px;
 	padding-top: 4px;
 }
 input, #swap-submit
 {
 	width: 288px;
 	height: 60px;
-	border-radius: 24px;
-	background-color: #eeeaf4;
+	border-radius: 12px;
+	background-color: #c6d2d9;
 	border-color: transparent;
 	box-shadow: 1px 2px 2px grey;
 	text-align: right;
-	font-size: 20px;
+	font-size: 25px;
 	padding-right: 12px;
 }
 
@@ -136,17 +137,17 @@ input, #swap-submit
 }
 #swap-up-down:before
 {
-	background-color: #eeeaf4;
+	background-color: #f3f4ea;
 	display: inline;
 	padding: 4px;
-	border-radius: 50%;
-	color:#1fc7d4;
+	border-radius: 0%;
+	color:#af2606;
 	content:"🡣";
 	cursor: pointer;
 }
 #swap-up-down:hover:before
 {
-	background-color: #1fc7d4;
+	background-color: #af2606;
 	color:white;
 	content:"⮁";
 }
@@ -162,16 +163,16 @@ input, #swap-submit
 }
 #swap-price-word
 {
-	color: #9a41ce;
-	font-size: 12px;
+	color: #af2606;
+	font-size: 15px;
 	font-weight: bolder;
 	padding-top: 8px;
 }
 #swap-price
 {
 	float: right;
-	color: #282464;
-	font-size: 12px;
+	color: #af2606;
+	font-size: 15px;
 }
 
 #swap-submit
@@ -180,14 +181,14 @@ input, #swap-submit
 	text-align: center;
 	font-weight: bold;
 	margin-top: 28px;
-	background-color: #1fc7d4;
+	background-color: #af2606;
 	color: white;
 	cursor: pointer;
 }
 
 #swap-submit:hover
 {
-	background-color: #2fecfb;
+	background-color: black;
 }
 
 button {
@@ -196,12 +197,20 @@ button {
     text-align: center;
     font-weight: bold;
     margin-top: 28px;
-    background-color: #1fc7d4;
+    background-color: #af2606;
     color: white;
     cursor: pointer;
-	border-radius: 24px;
+	border-radius: 10px;
 	float: right;
 	clear: both;
+	border: 1px;
+    border-color: transparent;
+    box-shadow: 1px 2px 2px black;
+}
+
+button:hover
+{
+	background-color: black;
 }
 
 .token {
