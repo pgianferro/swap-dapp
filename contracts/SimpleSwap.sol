@@ -3,67 +3,51 @@ pragma solidity >0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "./LPToken.sol";
 
 /// @title SimpleSwap
 /// @author Pablo Gianferro
-/// @notice ETHKIPU TP MODULE 3: A simplified implementation of a Uniswap-like liquidity pool for two ERC20 tokens.
-/// @dev This contract handles tokenA and tokenB liquidity pools and manages internal LP tokens.
-///      LP tokens are not ERC20-compatible but are tracked via internal mappings.
-
+/// @notice A minimalistic Uniswap-like DEX for two ERC20 tokens (tokenA and tokenB).
+/// @dev Manages a liquidity pool with constant product formula and issues ERC20 LP tokens using a separate contract.
 contract SimpleSwap {
-    /// @notice owner Address of the provider of LP tokens (initialized by the contract)
-    address public owner;
+    /// @notice Address of the LP token contract used to mint/burn liquidity tokens
+    LPToken public lpToken;
 
-    /// @notice Name of the liquidity token (LP token)
-    string internal _name;
-
-    /// @notice Symbol of the liquidity token (LP token)
-    string internal _symbol;
-
-    /// @notice Decimals used for the LP token (default is 18)
-    uint8 internal _decimals;
-
-    /// @notice Address of token A
+    /// @notice Address of token A in the pair
     address public tokenA;
 
-    /// @notice Address of token B
+    /// @notice Address of token B in the pair
     address public tokenB;
 
-    /// @notice Current reserve of token A held by the pool
+    /// @notice Current reserve amount of token A held by the contract
     uint256 public reserveA;
 
-    /// @notice Current reserve of token B held by the pool
+    /// @notice Current reserve amount of token B held by the contract
     uint256 public reserveB;
 
-    /// @notice Total supply of LP tokens minted
-    uint256 internal _totalSupply;
+    /// @notice Address of the contract owner (set at deployment)
+    address public owner;
 
-    /// @notice Mapping of LP token balances per user
-    mapping(address => uint256) internal _balanceOf;
-
-    /// @notice Initializes the contract with the two token addresses
+    /// @notice Initializes the SimpleSwap contract with the two token addresses and creates LP token instance
     /// @param _tokenA Address of token A
     /// @param _tokenB Address of token B
     constructor(address _tokenA, address _tokenB) {
+        lpToken = new LPToken("SimpleSwap LP Token", "SSLP", address(this));
         tokenA = _tokenA;
         tokenB = _tokenB;
-        _name = "SimpleSwap LP Token";
-        _symbol = "SSLP";
-        _decimals = 18;
         owner = msg.sender;
     }
 
-    /// @notice Struct to group the two token addresses managed by the pool
-    /// @dev Used to reduce stack usage when passing tokenA and tokenB together
+    /// @notice Struct to group tokenA and tokenB as a pair
     struct TokenPair {
         address tokenA;
         address tokenB;
     }
 
-    /// @notice Emitted when INITIAL liquidity is added to the pool
+    /// @notice Emitted when the first liquidity is added to the pool
     /// @param provider Address of the liquidity provider
-    /// @param amountA Amount of token A added
-    /// @param amountB Amount of token B added
+    /// @param amountA Amount of token A deposited
+    /// @param amountB Amount of token B deposited
     /// @param liquidityMinted Amount of LP tokens minted
     event InitialLiquidityAdded(
         address indexed provider,
@@ -72,10 +56,10 @@ contract SimpleSwap {
         uint256 liquidityMinted
     );
 
-    /// @notice Emitted when liquidity is added to the pool
+    /// @notice Emitted when additional liquidity is added
     /// @param provider Address of the liquidity provider
-    /// @param amountA Amount of token A added
-    /// @param amountB Amount of token B added
+    /// @param amountA Amount of token A deposited
+    /// @param amountB Amount of token B deposited
     /// @param liquidityMinted Amount of LP tokens minted
     event LiquidityAdded(
         address indexed provider,
@@ -86,8 +70,8 @@ contract SimpleSwap {
 
     /// @notice Emitted when liquidity is removed from the pool
     /// @param provider Address of the liquidity provider
-    /// @param amountA Amount of token A returned
-    /// @param amountB Amount of token B returned
+    /// @param amountA Amount of token A returned to the user
+    /// @param amountB Amount of token B returned to the user
     /// @param liquidityBurned Amount of LP tokens burned
     event LiquidityRemoved(
         address indexed provider,
@@ -96,12 +80,12 @@ contract SimpleSwap {
         uint256 liquidityBurned
     );
 
-    /// @notice Emitted when a token swap is performed
+    /// @notice Emitted when a user performs a token swap
     /// @param swapper Address performing the swap
-    /// @param tokenIn Address of the token sent in
-    /// @param amountIn Amount of token sent
-    /// @param tokenOut Address of the token received
-    /// @param amountOut Amount of token received
+    /// @param tokenIn Address of the input token
+    /// @param amountIn Amount of input token
+    /// @param tokenOut Address of the output token
+    /// @param amountOut Amount of output token
     event TokensSwapped(
         address indexed swapper,
         address tokenIn,
@@ -110,32 +94,17 @@ contract SimpleSwap {
         uint256 amountOut
     );
 
-    /// @notice Returns the name of the LP token
-    function name() external view returns (string memory) {
-        return _name;
-    }
-
-    /// @notice Returns the symbol of the LP token
-    function symbol() external view returns (string memory) {
-        return _symbol;
-    }
-
-    /// @notice Returns the number of decimals used for the LP token
-    function decimals() external view returns (uint8) {
-        return _decimals;
-    }
-
     /// @notice Adds liquidity to the pool and mints LP tokens
-    /// @param tokenA_ address of tokenA
-    /// @param tokenB_ address of tokenB
-    /// @param amountADesired Amount of token A to add
-    /// @param amountBDesired Amount of token B to add
-    /// @param amountAMin Minimum accepted amount of token A
-    /// @param amountBMin Minimum accepted amount of token B
-    /// @param to Address to receive LP tokens
-    /// @param deadline Transaction expiry timestamp
-    /// @return amountA Final amount of token A added
-    /// @return amountB Final amount of token B added
+    /// @param tokenA_ Address of token A (must match the pool)
+    /// @param tokenB_ Address of token B (must match the pool)
+    /// @param amountADesired Amount of token A to contribute
+    /// @param amountBDesired Amount of token B to contribute
+    /// @param amountAMin Minimum acceptable amount of token A
+    /// @param amountBMin Minimum acceptable amount of token B
+    /// @param to Address to receive the minted LP tokens
+    /// @param deadline Expiration timestamp for the transaction
+    /// @return amountA Actual amount of token A added
+    /// @return amountB Actual amount of token B added
     /// @return liquidity Amount of LP tokens minted
     function addLiquidity(
         address tokenA_,
@@ -146,14 +115,7 @@ contract SimpleSwap {
         uint256 amountBMin,
         address to,
         uint256 deadline
-    )
-        external
-        returns (
-            uint256 amountA,
-            uint256 amountB,
-            uint256 liquidity
-        )
-    {
+    ) external returns (uint256 amountA, uint256 amountB, uint256 liquidity) {
         TokenPair memory tokens = TokenPair(tokenA, tokenB);
 
         require(deadline > block.timestamp, "Transact expired");
@@ -164,7 +126,7 @@ contract SimpleSwap {
 
         uint256 _reserveA = reserveA;
         uint256 _reserveB = reserveB;
-        uint256 _supply = _totalSupply;
+        uint256 _supply = lpToken.totalSupply();
 
         if (_reserveA == 0 && _reserveB == 0) {
             // First add: use amountDesired for A and B
@@ -207,25 +169,27 @@ contract SimpleSwap {
 
         require(liquidity > 0, "zero liq");
 
+        // Update reserves
         reserveA += amountA;
         reserveB += amountB;
-        _totalSupply += liquidity;
-        _balanceOf[to] += liquidity;
+
+        //Mint LP tokens using ERC20-compliant LPToken contract
+        lpToken.mint(to, liquidity);
 
         emit LiquidityAdded(msg.sender, amountA, amountB, liquidity);
         return (amountA, amountB, liquidity);
     }
 
     /// @notice Removes liquidity from the pool and burns LP tokens
-    /// @param tokenA_ address of tokenA
-    /// @param tokenB_ address of tokenB
-    /// @param liquidity amount of LP tokens to burn
-    /// @param amountAMin Minimum accepted amount of token A
-    /// @param amountBMin Minimum accepted amount of token B
-    /// @param to Address to receive tokens
-    /// @param deadline Transaction expiry timestamp
-    /// @return amountA Final amount of token A added
-    /// @return amountB Final amount of token B added
+    /// @param tokenA_ Address of token A (must match the pool)
+    /// @param tokenB_ Address of token B (must match the pool)
+    /// @param liquidity Amount of LP tokens to burn
+    /// @param amountAMin Minimum acceptable amount of token A
+    /// @param amountBMin Minimum acceptable amount of token B
+    /// @param to Address to receive the returned tokens
+    /// @param deadline Expiration timestamp for the transaction
+    /// @return amountA Actual amount of token A returned
+    /// @return amountB Actual amount of token B returned
     function removeLiquidity(
         address tokenA_,
         address tokenB_,
@@ -237,16 +201,15 @@ contract SimpleSwap {
     ) external returns (uint256 amountA, uint256 amountB) {
         require(deadline > block.timestamp, "Transact expired");
 
-        uint256 _reserveA = reserveA;
-        uint256 _reserveB = reserveB;
-        uint256 _supply = _totalSupply;
-        uint256 _userBalance = _balanceOf[msg.sender];
-
         TokenPair memory tokens = TokenPair(tokenA, tokenB);
         require(
             tokenA_ == tokens.tokenA && tokenB_ == tokens.tokenB,
             "bad pair"
         );
+
+        uint256 _reserveA = reserveA;
+        uint256 _reserveB = reserveB;
+        uint256 _supply = lpToken.totalSupply();
 
         //Calculates amount of token A and B to return to user
         amountA = (liquidity * _reserveA) / _supply;
@@ -254,15 +217,13 @@ contract SimpleSwap {
 
         require(amountA >= amountAMin, "A < min");
         require(amountB >= amountBMin, "B < min");
-        require(_userBalance >= liquidity, "LP low");
+        require(lpToken.balanceOf(msg.sender) >= liquidity, "LP low");
         require(_reserveA >= amountA && _reserveB >= amountB, "reserves low");
 
         //Burns the LP tokens equivalent to the liquidity param from user
-        _balanceOf[msg.sender] = _userBalance - liquidity;
-        _totalSupply = _supply - liquidity;
+        lpToken.burnFrom(msg.sender, liquidity);
 
         //Transfers the tokens to user
-
         IERC20(tokens.tokenA).transfer(to, amountA);
         IERC20(tokens.tokenB).transfer(to, amountB);
 
@@ -344,11 +305,10 @@ contract SimpleSwap {
     /// @param tokenA_ Address of the first ERC20 token to calculate a price for.
     /// @param tokenB_ Address of the second ERC20 token to calculate a price for.
     /// @return price Price of tokenA in terms of tokenB
-    function getPrice(address tokenA_, address tokenB_)
-        external
-        view
-        returns (uint256 price)
-    {
+    function getPrice(
+        address tokenA_,
+        address tokenB_
+    ) external view returns (uint256 price) {
         TokenPair memory tokens = TokenPair(tokenA, tokenB);
         require(
             (tokenA_ == tokens.tokenA && tokenB_ == tokens.tokenB) ||

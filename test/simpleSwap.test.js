@@ -629,26 +629,4 @@ describe("SimpleSwap", function () {
     });
 
 
-
-    // 5. OTHER FUNCTIONS TESTS
-
-    /// @test 5.1 - Should return correct LP token name
-    it("5.1 - Should return correct LP token name", async function () {
-        const { swap } = await loadFixture(deployFixture);
-        expect(await swap.name()).to.equal("SimpleSwap LP Token");
-    });
-
-    /// @test 5.2 - Should return correct LP token symbol
-    it("5.2 - Should return correct LP token symbol", async function () {
-        const { swap } = await loadFixture(deployFixture);
-        expect(await swap.symbol()).to.equal("SSLP");
-    });
-
-    /// @test 5.3 - Should return correct LP token decimals
-    it("5.3 - Should return correct LP token decimals", async function () {
-        const { swap } = await loadFixture(deployFixture);
-        expect(await swap.decimals()).to.equal(18);
-    });
-
-
 });

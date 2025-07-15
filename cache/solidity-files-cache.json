@@ -125,6 +125,45 @@
         "IERC20"
       ]
     },
+    "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1752082670741,
+      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": false
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
     "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
       "lastModificationDate": 1752082670743,
       "contentHash": "267d92fe4de67b1bdb3302c08f387dbf",
@@ -164,45 +203,6 @@
         "IERC1155Errors",
         "IERC20Errors",
         "IERC721Errors"
-      ]
-    },
-    "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1752082670741,
-      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Context"
       ]
     },
     "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
@@ -247,8 +247,8 @@
       ]
     },
     "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/contracts/SimpleSwap.sol": {
-      "lastModificationDate": 1752174334046,
-      "contentHash": "095867ee328dca5aedb92dcf2a0fa150",
+      "lastModificationDate": 1752585202458,
+      "contentHash": "264a6fbd54c5afdc8fb3d147df01a04e",
       "sourceName": "contracts/SimpleSwap.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -279,13 +279,56 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "@openzeppelin/contracts/utils/math/Math.sol"
+        "@openzeppelin/contracts/utils/math/Math.sol",
+        "./LPToken.sol"
       ],
       "versionPragmas": [
         ">0.8.0"
       ],
       "artifacts": [
         "SimpleSwap"
+      ]
+    },
+    "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/contracts/LPToken.sol": {
+      "lastModificationDate": 1752584993170,
+      "contentHash": "e67cb01aa7819f4ebcbe8fd950791dcc",
+      "sourceName": "contracts/LPToken.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": false
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "LPToken"
       ]
     },
     "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
@@ -328,6 +371,47 @@
       ],
       "artifacts": [
         "Math"
+      ]
+    },
+    "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1752082670761,
+      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": false
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Ownable"
       ]
     },
     "/Users/pablogianferro/Downloads/WEB FULL STACK/Codo a Codo/01_Curso Solidity/MODULO 4/simple-swap-frontend/simpleswap-dapp/node_modules/@openzeppelin/contracts/utils/Panic.sol": {
